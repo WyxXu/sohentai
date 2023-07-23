@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
+
+    <style>
+       
+
+        @font-face{
+        font-family:ChironSung;
+        /*为引入的字体命名*/
+        src:url(./font/ChironHeiHKVF.ttf);
+        src:url(./font/ChironHeiHKItVF.otf);
+        /*定义要引入字体文件的路径*/
+        font-weight:400;
+        font-style:normal;
+        }     
+        
+        @font-face{
+        font-family:Readex;
+        /*为引入的字体命名*/
+        src:url(./font/Readexpro[HEXP,wght].ttf);
+        src:url(./font/LexendDeca[wght].ttf);
+        /*定义要引入字体文件的路径*/
+        font-weight:400;
+        font-style:normal;
+        }
+          
+               
+               * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                    font-family: 'Readex','Chiron' 
+                    !important;
+               }
+                body {
+                    background-color: rgb(53, 74, 95);
+                }
+        
+                .MultiTabContainer {
+                    max-width: 90%;
+                    width: 100%;
+                    margin: 2em auto;
+                    padding: 25px 30px 30px 30px;
+                    color: rgba(15, 36, 67, 0.399);
+                    background-color: aliceblue;
+                    border-radius: 5px;
+                }
+        
+                .MultiTabContainer h1 {
+                    margin-bottom: 20px;
+                }
+        
+                .MultiTabContainer nav {
+                    position: relative;
+                    height: 50px;
+                    width: 80%;
+                    display: flex;
+                    align-items: center;
+                    background-color: rgb(148, 145, 145);
+                    color: rgb(200, 204, 207);
+                    border-radius: 5px;
+                }
+        
+                .MultiTabContainer nav label {
+                    position: relative;
+                    display: block;
+                    height: 100%;
+                    width: 100%;
+                    text-align: center;
+                    line-height: 50px;
+                    cursor: pointer;
+                    z-index: 1;
+                }
+        
+                .MultiTabContainer nav label i {
+                    padding-right: 7px;
+                    padding-left: 2px;
+                }
+        
+                .MultiTabContainer nav .TabSlider {
+                    position: absolute;
+                    height: 100%;
+                    width: 20%;
+                    background-color: rgb(61, 58, 58);
+                    opacity: 0.5;
+                    filter: brightness(2) contrast(3) hue-rotate(225) invert(5);
+                    border-radius: 5px;
+                    z-index: 0;
+                    left: 0;
+                    bottom: 0;
+                    transition: all 0.2s ease;
+        
+                }
+        
+                #blog:checked~nav .TabSlider {
+                    left: 20%;
+                }
+        
+                #code:checked~nav .TabSlider {
+                    left: 40%;
+                }
+        
+                #help:checked~nav .TabSlider {
+                    left: 60%;
+                }
+        
+                #about:checked~nav .TabSlider {
+                    left: 80%;
+                }
+        
+                #home:checked~nav label.home,
+                #blog:checked~nav label.blog,
+                #code:checked~nav label.code,
+                #help:checked~nav label.help,
+                #about:checked~nav label.about {
+                    color: rgb(255, 255, 255);
+                    transition: all 0.2s ease;
+                }
+        
+                input[type="radio"] {
+                    display: none;
+                }
+        
+        
+        
+                section .TabContent .InnerTitle {
+                    margin-top: .8em;
+                    margin-bottom: .3em;
+                    color: rgb(56, 85, 106);
+                }
+        
+                #home:checked~section .Content-1,
+                #blog:checked~section .Content-2,
+                #code:checked~section .Content-3,
+                #help:checked~section .Content-4,
+                #about:checked~section .Content-5 {
+                    display: block;
+                }
+        
+                section .TabContent {
+                    display: none;
+                }
+        
+                .MultiTabContainer .TabContent {
+                    /* background-color: blueviolet; */
+                    width: 80%;
+                }
+        
+                .Placeholder {
+                    background-color: rgb(148, 145, 145);
+                    width: 80%;
+                    height: 200px;
+        
+                    margin: 2em 0 0 0;
+                    border-radius: .2em;
+                    overflow: hidden;
+                }
+        
+                .Placeholder img {
+                    object-fit: fill;
+        
+                    position: relative;
+                    left: 50%;
+                    top: 90%;
+                    transform: translateX(-50%) translateY(-50%);
+        
+                }
+        
+        
+                /* Content-5 */
+
+                a
+                {
+                    text-decoration: none;
+                    border: 1px solid ;
+                    border-radius: .2em;;
+                    padding: .2em .5em ;;
+                    color: rgb(56, 85, 106);
+                }
+                a:visited{
+                    color: cornflowerblue;
+                }
+            </style>
+        
+</head>
+
+<body>
+
+    <div class="MultiTabContainer">
+        <h1>三分鐘熱度，三分鐘收穫</h1>
+        <input type="radio" name="tabSwither" id="home" checked>
+        <input type="radio" name="tabSwither" id="blog">
+        <input type="radio" name="tabSwither" id="code">
+        <input type="radio" name="tabSwither" id="help">
+        <input type="radio" name="tabSwither" id="about">
+
+        <nav>
+            <label for="home" class="home"><i class="fas fa-home"> </i>Home</label>
+            <label for="blog" class="blog"><i class="fas fa-blog"> </i>Blog</label>
+            <label for="code" class="code"><i class="fas fa-code"> </i>Code</label>
+            <label for="help" class="help"><i class="fas fa-envelope"></i>Help</label>
+            <label for="about" class="about"><i class="fas fa-user"> </i>About</label>
+            <div class="TabSlider"></div>
+        </nav>
+        <section>
+            <div class="TabContent Content-1">
+                <h3 class="InnerTitle">建設中</h1>
+                    <p>Lorem ipsum dolor</p>
+            </div>
+            <div class="TabContent Content-2">
+                <h3 class="InnerTitle">BlogPage</h3>
+                <p>Nam eget euismod nulla</p>
+            </div>
+            <div class="TabContent Content-3">
+                <h3 class="InnerTitle">純三件套小工具</h3>
+                <p>In hac habitasse platea dictumst</p>
+
+                <div style="padding: 0.5em 0em;;;">
+                    <a href="vicePages/transToOrigin.html">透明色反求原色</a>
+                    <a href="vicePages/MeM3.html">流式佈局便簽</a>
+                </div>
+
+                
+
+
+            </div>
+            <div class="TabContent Content-4">
+                <h3 class="InnerTitle">HelpPage</h3>
+                <p>Curabitur a tincidunt ligula</p>
+            </div>
+            <div class="TabContent Content-5">
+                <h3 class="InnerTitle">AboutPage</h3>
+                <p>Nunc non volutpat tortor</p>
+            </div>
+        </section>
+        <div class="Placeholder">
+            <img src="https://pbs.twimg.com/media/Fp6IKuGXwAArhMs?format=jpg&name=small" alt="">
+        </div>
+    </div>
+
+ 
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+</body>
+
+</html>

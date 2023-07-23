@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            font-family: "Lexend Deca", "Chiron Sung Hk Heavy";
+        }
+        html{
+            background-color: rgb(208, 222, 227);
+            color: rgb(86, 94, 78);
+        }
+        .ViewerContainer {
+            /* display: flex;
+            justify-content: center;
+            align-items: center; */
+            border: .2px solid rgba(0, 128, 128, 0.161);
+            height: fit-content;
+            padding-bottom: 2em;;
+            border-radius: 2em;
+            box-shadow: inset .5em .5em .5em rgba(0, 0, 0, 0.335);
+        }
+
+        .Viewers {
+            width: 20vw;
+            height: 5em;
+            margin: 1em .5em;
+            display: inline-block;
+        }
+        .AlphaViewer{
+            width: 20vw;
+            height: 5em;
+            margin: 1em .5em;
+            display: inline-block;
+        }
+        #invisible{
+            opacity: 0;
+        }
+
+        .ColorViewer {
+            width: 100%;
+            height: 5em;
+            border-radius: .5em;
+            box-shadow: inset .5em .5em .5em rgba(0, 0, 0, 0.335);
+            margin: .25em 0em;
+        }
+
+
+        input,
+        span {
+            width: 100%;
+            height: 2em;
+            line-height: 2em;
+            border-radius: .2em;
+            margin: .25em 0em;
+        }
+
+        #deltaAlphaInput{
+            height: 100%;;
+        }
+        #VerticalSliderContainer{
+            
+        }
+
+        span {
+            width: 100%;
+            background-color: rgba(30, 30, 127, 0.396);
+            border-radius: .2em;
+            display: inline-block;
+            text-align: center;
+            box-shadow: inset .2em .2em .2em rgba(0, 0, 0, 0.335);
+            text-overflow: clip;
+            
+            
+        }
+        span#AlphaCaption{
+            background-color: rgba(30, 30, 127, 0);
+            box-shadow:none;
+}
+
+        .VerticalSlider {
+            text-align: center;
+            border-radius: .5em;            
+            
+
+        }
+
+        input[type=range][orient=vertical] {
+            writing-mode: bt-lr;
+            /* IE */
+            -webkit-appearance: slider-vertical;
+            /* Chromium */
+            width: 1px;
+            height: 12em;
+            padding: 0 1px;
+            outline-style: none;
+        }
+        input[type=color]{
+            outline-style: none;
+            border: none;
+            padding: 7px 07px;
+            border-radius: .2em;
+        }
+        input:focus, span:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+
+span:focus{
+
+}
+        #ResultColorViewer{
+            background-color: #c8b86a;
+        }
+        #BgColorViewer{
+            background-color: #2894c3;
+        }
+        #OriginalColorViewer{
+            background-color: #e9bf58;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+    <div class="ViewerContainer" id="ViewerContainer">
+
+        <center>
+        <div class="Viewers">
+            <h4>结果色</h4>
+            <!-- 结果色查看器 -->
+            <div id="ResultColorViewer" class="ColorViewer"></div>
+            <!-- 结果色拾色器 -->
+            <input type="color" name="ResultInput" id="ResultInput" value="#d9d44077">
+            <span id="ShowResultValue" contenteditable="true">#d9d44077</span>
+            <!-- 不透明度调整滑块 -->
+        </div>
+
+        <script class="logicPart" id="logicPartOne">
+            document.getElementById("ResultInput").addEventListener("input", () => {
+                // 实时获取 resultInput 的颜色值（输出的是hex）
+                var InputColorValue = document.getElementById("ResultInput").value;
+                console.log("resultInput的当前颜色值为 " + InputColorValue);
+
+                // 实时更新 ResultColorViewer 的背景色值 
+                var ResultColorViewer = document.getElementById("ResultColorViewer");
+                ResultColorViewer.style.backgroundColor = InputColorValue;
+                var bgcolor = ResultColorViewer.style.backgroundColor;
+                console.log("ResultColorViewer的背景色为 " + bgcolor);
+
+                // 更新背景色值为 ShowResultValue 的文本内容
+                var ShowResultValue = document.getElementById('ShowResultValue');
+                ShowResultValue.textContent = InputColorValue;
+
+            });
+            // 监视 ShowResultValue 输入值，更新到背景
+            document.getElementById('ShowResultValue').addEventListener('input', () => {
+
+                var ResultValue = document.getElementById('ShowResultValue').textContent;
+                var ResultInput = document.getElementById("ResultInput");
+                ResultInput.value = ResultValue;
+                console.log("resultInput的当前颜色值为 " + ResultValue);
+
+                var ResultColorViewer = document.getElementById("ResultColorViewer");
+                ResultColorViewer.style.backgroundColor = ResultValue;
+                console.log("ResultColorViewer的背景色为 " + ResultValue);
+
+            });
+        </script>
+
+        <div class="Viewers">
+            <h4>背景色</h4>
+            <!-- 背景色查看器 -->
+            <div id="BgColorViewer" class="ColorViewer"></div>
+            <!-- 背景色拾色器 -->
+            <input type="color" name="BgInput" id="BgInput" value="#2c407f33">
+            <span id="ShowBgValue" contenteditable="true">#2c407f33</span>
+            <!-- 不透明度调整滑块 -->
+        </div>
+
+        <script class="logicPart" id="logicPartTwo">
+            document.getElementById("BgInput").addEventListener("input", () => {
+                // 实时获取 resultInput 的颜色值（输出的是hex）
+                var BgColorValue = document.getElementById("BgInput").value;
+                console.log("BgInput的当前颜色值为 " + BgColorValue);
+
+                // 实时更新 ResultColorViewer 的背景色值 
+                var BgColorViewer = document.getElementById("BgColorViewer");
+                BgColorViewer.style.backgroundColor = BgColorValue;
+                var bgcolor = BgColorViewer.style.backgroundColor;
+                console.log("BgColorViewer的背景色为 " + bgcolor);
+
+                // 更新背景色值为 ShowResultValue 的文本内容
+                var ShowBgValue = document.getElementById('ShowBgValue');
+                ShowBgValue.textContent = BgColorValue;
+            });
+
+            // 监视 ShowResultValue 输入值，更新到背景
+            document.getElementById('ShowBgValue').addEventListener('input', () => {
+                var BgValue = document.getElementById('ShowBgValue').textContent;
+                var BgInput = document.getElementById("BgInput");
+                BgInput.value = BgValue;
+                console.log("BgInput的当前颜色值为 " + BgValue);
+
+                var BgColorViewer = document.getElementById("BgColorViewer");
+                BgColorViewer.style.backgroundColor = BgValue;
+                console.log("BgColorViewer的背景色为 " + BgValue);
+
+            });
+        </script>
+
+
+
+        <div class="Viewers">
+            <!-- <h4>不透明度</h4> -->
+            <div id="VerticalSliderContainer VerticalSlider " class="AlphaViewer">
+                <input type="range" orient="vertical" min="0" max="1" value="0.43" step="0.01" id="deltaAlphaInput"
+                    name="deltaAlpha"><br>
+                <span id="AlphaCaption" >不透明度</span><br>
+                <span id="ShowAlphaValue" contenteditable="true">0.43</span>
+            </div>
+        </div>
+
+        <script>
+            // 透明度滑块数值监测
+            document.getElementById('deltaAlphaInput').addEventListener('input', () => {
+                let deltaAlphaValue = document.getElementById('deltaAlphaInput').value;
+
+                console.log(deltaAlphaValue);
+
+                let AlphaSpan = document.getElementById('ShowAlphaValue');
+
+                AlphaSpan.textContent = deltaAlphaValue;
+
+            });
+            document.getElementById('ShowAlphaValue').addEventListener('input', () => {
+
+                let AlphaSpan = document.getElementById('ShowAlphaValue');
+                let AlphaSpanText = AlphaSpan.innerText;
+                console.log("AlphaSpan: " + AlphaSpanText);
+                
+                let deltaAlpha = document.getElementById('deltaAlphaInput');               
+                deltaAlpha.value = AlphaSpanText;
+                
+                
+});
+
+        </script>
+
+        <div class="Viewers">
+            <h4>原色</h4>
+            <!-- 原色查看器 -->
+            <div id="OriginalColorViewer" class="ColorViewer"></div>
+            <!-- 原色拾色器 -->
+            <input type="color" name="OriginalInput" id="OriginalInput" value="#ffff00aa">
+            <span id="ShowOriginalValue" contenteditable="true">#ffff00aa</span>
+
+        </div>
+
+        <script class="logicPart" id="logicPartThree">
+            document.getElementById("OriginalInput").addEventListener("input", () => {
+                // 实时获取 OriginalInput 的颜色值（输出的是hex）
+                var OriginalColorValue = document.getElementById("OriginalInput").value;
+                console.log("OriginalInput的当前颜色值为 " + OriginalColorValue);
+
+                // 实时更新 OriginalColorViewer 的背景色值 
+                var OriginalColorViewer = document.getElementById("OriginalColorViewer");
+                OriginalColorViewer.style.backgroundColor = OriginalColorValue;
+                var Originalcolor = OriginalColorViewer.style.backgroundColor;
+                console.log("OriginalColorViewer的背景色为 " + Originalcolor);
+
+                // 更新背景色值为 ShowOriginalValue 的文本内容
+                var ShowOriginalValue = document.getElementById('ShowOriginalValue');
+                ShowOriginalValue.textContent = OriginalColorValue;
+            });
+            // 监视 ShowOriginalValue 输入值，更新到背景
+            document.getElementById('ShowOriginalValue').addEventListener('input', () => {
+
+                var OriginalValue = document.getElementById('ShowOriginalValue').textContent;
+                var OriginalInput = document.getElementById("OriginalInput");
+                OriginalInput.value = OriginalValue;
+                console.log("OriginalInput的当前颜色值为 " + OriginalValue);
+
+                var OriginalColorViewer = document.getElementById("OriginalColorViewer");
+                OriginalColorViewer.style.backgroundColor = OriginalValue;
+                console.log("OriginalColorViewer的背景色为 " + OriginalValue);
+
+            });
+        </script>
+
+</center>
+    </div>
+
+    <!-- 各部分的交互逻辑 -->
+
+    <script class="logicPart" id="logicInteract">
+
+        // 公用函数
+
+        // 将 hex值 的 R G B 分量拆分到不同变量
+        function separateChannels(hex) {
+            // 去掉'#"
+            let hexValue = hex.substring(1);
+            // 分离通道
+            let r = hexValue.substring(0, 2);
+            let g = hexValue.substring(2, 4);
+            let b = hexValue.substring(4);
+            // 返回
+            return [r, g, b];
+        }
+
+        // 将单通道的 hex 值 转换为十进制值
+        function hexToDec(hex) {
+            // 使用 parseInt 转换,指定 16 进制
+            let dec = parseInt(hex, 16);
+            return dec;
+        }
+
+        // 将值限制在 0- 225 区间，且为整数
+        function normalizeColor(value) {
+            // 限制在0-255区间内
+            value = Math.min(255, Math.max(0, value));
+            // 四舍五入到整数
+            value = Math.round(value);
+            return value;
+        }
+
+        // 将完整的 rgb值 转换为 hex字串
+        function DecToHex(dec) {
+            let rgb = dec;
+            let r = rgb[0].toString(16);
+            let g = rgb[1].toString(16);
+            let b = rgb[2].toString(16);
+            if (r.length == 1) r = '0' + r;
+            if (g.length == 1) g = '0' + g;
+            if (b.length == 1) b = '0' + b;
+            let hex = '#' + r + g + b;
+            return hex;
+
+        }
+
+        // 公用变量
+        /**
+         * 问题：要监听才能实时更新，但是写在监听处理函数中，变量值就无法公用
+        */
+
+
+        // 第一部分，从结果色的输入推算出原色
+        document.getElementById('ResultInput').addEventListener('input', () => {
+            
+            // 接收 input 的输入值
+            let ResultInput = document.getElementById('ResultInput').value;
+            let BgInput = document.getElementById('BgInput').value;
+            let OriginalInput = document.getElementById('OriginalInput').value;
+            let DeltaAlpha = document.getElementById('deltaAlphaInput').value;
+
+            // 分拆通道值值
+            let BgColor = separateChannels(BgInput);
+            let RbgColor = hexToDec(BgColor[0]);
+            let GbgColor = hexToDec(BgColor[1]);
+            let BbgColor = hexToDec(BgColor[2]);
+
+            let ResultColor = separateChannels(ResultInput);            
+            let Rresult = hexToDec(ResultColor[0]);
+            let Gresult = hexToDec(ResultColor[1]);
+            let Bresult = hexToDec(ResultColor[2]);
+
+            let originalColor = separateChannels(OriginalInput);
+            let Roriginal = hexToDec(originalColor[0]);
+            let Goriginal = hexToDec(originalColor[1]);
+            let Boriginal = hexToDec(originalColor[2]);
+
+            // 值检查
+            console.log("当前结果色： " + ResultInput + " 当前背景色： " + BgInput + " 当前原色： " + OriginalInput + "DeltaAlpha: " + DeltaAlpha);
+            console.log("Rresult: " + Rresult + " Gresult: " + Gresult + " Bresult: " + Bresult);
+            console.log("RbgColor: " + RbgColor + " GbgColor: " + GbgColor + " BbgColor: " + BbgColor);
+            console.log("Roriginal: " + Roriginal + " Goriginal: " + Goriginal + " Boriginal: " + Boriginal);
+
+            // 计算原色
+            Roriginal = normalizeColor((Rresult - RbgColor * (1 - DeltaAlpha)) / DeltaAlpha);
+            Goriginal = normalizeColor((Gresult - GbgColor * (1 - DeltaAlpha)) / DeltaAlpha);
+            Boriginal = normalizeColor((Bresult - BbgColor * (1 - DeltaAlpha)) / DeltaAlpha);
+
+            let OriginalColorArr = [Roriginal, Goriginal, Boriginal];
+            let finalOrginalHex = DecToHex(OriginalColorArr);
+            // 检查值
+            console.log(OriginalColorArr);            
+            console.log(finalOrginalHex);
+
+            // 输出到 原色span 和 原色viewer
+            document.getElementById("ShowOriginalValue").textContent = finalOrginalHex;
+            document.getElementById("OriginalColorViewer").style.backgroundColor = finalOrginalHex;
+            
+            let OriginalValueSpanText = document.getElementById("ShowOriginalValue").textContent;
+            document.querySelector('#OriginalInput').value = OriginalValueSpanText;
+        });
+
+// 第二部分，从背景色的输入推算出结果色
+document.getElementById('BgInput').addEventListener("input", () => {
+
+            // 接收 input 的输入值
+            let ResultInput = document.getElementById('ResultInput').value;
+            let BgInput = document.getElementById('BgInput').value;
+            let OriginalInput = document.getElementById('OriginalInput').value;
+            let DeltaAlpha = document.getElementById('deltaAlphaInput').value;
+
+            // 分拆通道值值
+            let BgColor = separateChannels(BgInput);
+            let RbgColor = hexToDec(BgColor[0]);
+            let GbgColor = hexToDec(BgColor[1]);
+            let BbgColor = hexToDec(BgColor[2]);
+
+            let ResultColor = separateChannels(ResultInput);            
+            let Rresult = hexToDec(ResultColor[0]);
+            let Gresult = hexToDec(ResultColor[1]);
+            let Bresult = hexToDec(ResultColor[2]);
+
+            let originalColor = separateChannels(OriginalInput);
+            let Roriginal = hexToDec(originalColor[0]);
+            let Goriginal = hexToDec(originalColor[1]);
+            let Boriginal = hexToDec(originalColor[2]);
+
+            // 值检查
+            console.log("当前结果色： " + ResultInput + " 当前背景色： " + BgInput + " 当前原色： " + OriginalInput + "DeltaAlpha: " + DeltaAlpha);
+            console.log("Rresult: " + Rresult + " Gresult: " + Gresult + " Bresult: " + Bresult);
+            console.log("RbgColor: " + RbgColor + " GbgColor: " + GbgColor + " BbgColor: " + BbgColor);
+            console.log("Roriginal: " + Roriginal + " Goriginal: " + Goriginal + " Boriginal: " + Boriginal);
+
+            // 计算原色
+            Roriginal = normalizeColor((Rresult - RbgColor * (1 - DeltaAlpha)) / DeltaAlpha);
+            Goriginal = normalizeColor((Gresult - GbgColor * (1 - DeltaAlpha)) / DeltaAlpha);
+            Boriginal = normalizeColor((Bresult - BbgColor * (1 - DeltaAlpha)) / DeltaAlpha);
+
+            let OriginalColorArr = [Roriginal, Goriginal, Boriginal];
+            let finalOrginalHex = DecToHex(OriginalColorArr);
+            // 检查值
+            console.log(OriginalColorArr);            
+            console.log(finalOrginalHex);
+
+            // 输出到 原色span 和 原色viewer
+            document.getElementById("ShowOriginalValue").textContent = finalOrginalHex;
+            document.getElementById("OriginalColorViewer").style.backgroundColor = finalOrginalHex;
+
+            let OriginalValueSpanText = document.getElementById("ShowOriginalValue").textContent;
+            document.querySelector('#OriginalInput').value = OriginalValueSpanText;
+
+});
+
+ 
+
+// 第三部分，从 不透明度的输入 修改其它值
+
+document.getElementById('deltaAlphaInput').addEventListener("input", () => {
+
+// 接收 input 的输入值
+let ResultInput = document.getElementById('ResultInput').value;
+let BgInput = document.getElementById('BgInput').value;
+let OriginalInput = document.getElementById('OriginalInput').value;
+let DeltaAlpha = document.getElementById('deltaAlphaInput').value;
+
+// 分拆通道值值
+let BgColor = separateChannels(BgInput);
+let RbgColor = hexToDec(BgColor[0]);
+let GbgColor = hexToDec(BgColor[1]);
+let BbgColor = hexToDec(BgColor[2]);
+
+let ResultColor = separateChannels(ResultInput);            
+let Rresult = hexToDec(ResultColor[0]);
+let Gresult = hexToDec(ResultColor[1]);
+let Bresult = hexToDec(ResultColor[2]);
+
+let originalColor = separateChannels(OriginalInput);
+let Roriginal = hexToDec(originalColor[0]);
+let Goriginal = hexToDec(originalColor[1]);
+let Boriginal = hexToDec(originalColor[2]);
+
+// 值检查
+console.log("当前结果色： " + ResultInput + " 当前背景色： " + BgInput + " 当前原色： " + OriginalInput + "DeltaAlpha: " + DeltaAlpha);
+console.log("Rresult: " + Rresult + " Gresult: " + Gresult + " Bresult: " + Bresult);
+console.log("RbgColor: " + RbgColor + " GbgColor: " + GbgColor + " BbgColor: " + BbgColor);
+console.log("Roriginal: " + Roriginal + " Goriginal: " + Goriginal + " Boriginal: " + Boriginal);
+
+// 计算原色
+Roriginal = normalizeColor((Rresult - RbgColor * (1 - DeltaAlpha)) / DeltaAlpha);
+Goriginal = normalizeColor((Gresult - GbgColor * (1 - DeltaAlpha)) / DeltaAlpha);
+Boriginal = normalizeColor((Bresult - BbgColor * (1 - DeltaAlpha)) / DeltaAlpha);
+
+let OriginalColorArr = [Roriginal, Goriginal, Boriginal];
+let finalOrginalHex = DecToHex(OriginalColorArr);
+// 检查值
+console.log(OriginalColorArr);            
+console.log(finalOrginalHex);
+
+// 输出到 原色span 和 原色viewer
+document.getElementById("ShowOriginalValue").textContent = finalOrginalHex;
+document.getElementById("OriginalColorViewer").style.backgroundColor = finalOrginalHex;
+
+let OriginalValueSpanText = document.getElementById("ShowOriginalValue").textContent;
+            document.querySelector('#OriginalInput').value = OriginalValueSpanText;
+
+});
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>
